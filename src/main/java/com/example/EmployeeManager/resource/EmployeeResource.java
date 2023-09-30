@@ -5,6 +5,7 @@ import com.example.EmployeeManager.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class EmployeeResource {
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.findAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        Employee newEmployee = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 }
