@@ -1,11 +1,11 @@
 package com.example.EmployeeManager.service;
 
+import com.example.EmployeeManager.exception.UserNotFoundException;
 import com.example.EmployeeManager.model.Employee;
 import com.example.EmployeeManager.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,9 +29,21 @@ public class EmployeeService {
         return employeeRepo.findAll();
     }
 
-    @PostMapping("/add")
     public Employee addEmployee(Employee employee) {
         employee.setEmployeeCode(UUID.randomUUID().toString());
         return employeeRepo.save(employee);
+    }
+
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepo.save(employee);
+    }
+
+    public Employee findEmployeeById(Long id) {
+        return employeeRepo.findEmployeeById(id)
+                .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
+    }
+
+    public void deleteEmployee (Long id) {
+        employeeRepo.deleteEmployeeById(id);
     }
 }
