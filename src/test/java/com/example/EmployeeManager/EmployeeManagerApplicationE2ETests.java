@@ -1,4 +1,4 @@
-   package com.example.EmployeeManager;
+package com.example.EmployeeManager;
 
    import com.example.EmployeeManager.model.Employee;
    import com.example.EmployeeManager.service.EmployeeService;
@@ -30,26 +30,50 @@
 
        @Test
        public void testGetAllEmployees() {
-           // ... test code ...
+           Employee employee1 = new Employee("John Doe", "john.doe@example.com", "Software Engineer", "1234567890", "imageUrl", "EMP001");
+           Employee employee2 = new Employee("Jane Doe", "jane.doe@example.com", "Product Manager", "0987654321", "imageUrl", "EMP002");
+           when(employeeService.findAllEmployees()).thenReturn(Arrays.asList(employee1, employee2));
+
+           List<Employee> employees = employeeService.findAllEmployees();
+           assertEquals(2, employees.size());
+           verify(employeeService, times(1)).findAllEmployees();
        }
 
        @Test
        public void testAddEmployee() {
-           // ... test code ...
+           Employee employee = new Employee("John Doe", "john.doe@example.com", "Software Engineer", "1234567890", "imageUrl", "EMP001");
+           when(employeeService.addEmployee(employee)).thenReturn(employee);
+
+           Employee addedEmployee = employeeService.addEmployee(employee);
+           assertEquals(employee, addedEmployee);
+           verify(employeeService, times(1)).addEmployee(employee);
        }
 
        @Test
        public void testUpdateEmployee() {
-           // ... test code ...
+           Employee employee = new Employee("John Doe", "john.doe@example.com", "Software Engineer", "1234567890", "imageUrl", "EMP001");
+           when(employeeService.updateEmployee(employee)).thenReturn(employee);
+
+           Employee updatedEmployee = employeeService.updateEmployee(employee);
+           assertEquals(employee, updatedEmployee);
+           verify(employeeService, times(1)).updateEmployee(employee);
        }
 
        @Test
        public void testDeleteEmployee() {
-           // ... test code ...
+           doNothing().when(employeeService).deleteEmployee(1L);
+
+           employeeService.deleteEmployee(1L);
+           verify(employeeService, times(1)).deleteEmployee(1L);
        }
 
        @Test
        public void testFindEmployeeById() {
-           // ... test code ...
+           Employee employee = new Employee("John Doe", "john.doe@example.com", "Software Engineer", "1234567890", "imageUrl", "EMP001");
+           when(employeeService.findEmployeeById(1L)).thenReturn(employee);
+
+           Employee foundEmployee = employeeService.findEmployeeById(1L);
+           assertEquals(employee, foundEmployee);
+           verify(employeeService, times(1)).findEmployeeById(1L);
        }
    }
