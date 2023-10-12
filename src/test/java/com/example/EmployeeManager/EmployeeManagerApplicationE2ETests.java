@@ -76,4 +76,38 @@ package com.example.EmployeeManager;
            assertEquals(employee, foundEmployee);
            verify(employeeService, times(1)).findEmployeeById(1L);
        }
+
+       @Test
+       public void testAddEmployeeWithInvalidData() {
+           Employee employee = new Employee("", "", "", "", "", "");
+           when(employeeService.addEmployee(employee)).thenThrow(new RuntimeException("Invalid data"));
+
+           assertThrows(RuntimeException.class, () -> employeeService.addEmployee(employee));
+           verify(employeeService, times(1)).addEmployee(employee);
+       }
+
+       @Test
+       public void testUpdateNonExistingEmployee() {
+           Employee employee = new Employee("John Doe", "john.doe@example.com", "Software Engineer", "1234567890", "imageUrl", "EMP001");
+           when(employeeService.updateEmployee(employee)).thenThrow(new RuntimeException("Employee not found"));
+
+           assertThrows(RuntimeException.class, () -> employeeService.updateEmployee(employee));
+           verify(employeeService, times(1)).updateEmployee(employee);
+       }
+
+       @Test
+       public void testDeleteNonExistingEmployee() {
+           doThrow(new RuntimeException("Employee not found")).when(employeeService).deleteEmployee(1L);
+
+           assertThrows(RuntimeException.class, () -> employeeService.deleteEmployee(1L));
+           verify(employeeService, times(1)).deleteEmployee(1L);
+       }
+
+       @Test
+       public void testFindEmployeeByIdWithInvalidId() {
+           when(employeeService.findEmployeeById(1L)).thenThrow(new RuntimeException("Employee not found"));
+
+           assertThrows(RuntimeException.class, () -> employeeService.findEmployeeById(1L));
+           verify(employeeService, times(1)).findEmployeeById(1L);
+       }
    }
